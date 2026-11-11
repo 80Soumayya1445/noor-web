@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head><meta charset="UTF-8"><title>Noor — redirection…</title></head>
+<body style="background:#0b0f0d;color:#edf3ef;font-family:sans-serif;text-align:center;padding-top:40vh">
+<script>
+  // Redirige les liens profonds de l'app (ex: /noor-web/quran/page/2) vers le lecteur
+  var p = location.pathname.replace(/^\/noor-web/, '');
+  location.replace('/noor-web/app' + p + location.search);
+</script>
+<noscript><p><a href="/noor-web/app/" style="color:#2eb886">Ouvrir Noor</a></p></noscript>
+</body>
+</html>

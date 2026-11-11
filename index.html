@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Noor — ton compagnon de Ramadan</title>
+<meta name="description" content="Noor : Coran complet hors ligne, suivi du jeûne, horaires de prière, dhikr et invocations. 100% gratuit, 100% privé.">
+<link rel="icon" href="app/favicon.ico">
+<style>
+  :root {
+    --bg: #0b0f0d; --bg2: #111714; --card: #161d19; --border: #243029;
+    --text: #edf3ef; --dim: #9aa8a0; --primary: #2eb886; --primary-soft: #123527;
+    --accent: #e9c46a; --shadow: rgba(0,0,0,.5);
+  }
+  [data-theme="light"] {
+    --bg: #f7f6f1; --bg2: #efeee7; --card: #ffffff; --border: #e3e2da;
+    --text: #1b2420; --dim: #66756d; --primary: #0e8a5f; --primary-soft: #dcf0e8;
+    --accent: #b98a1d; --shadow: rgba(30,50,40,.12);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { animation: none !important; transition: none !important; } }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; transition: background .3s, color .3s; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+  a { color: var(--primary); }
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+  .skip { position: absolute; left: -9999px; top: 0; background: var(--primary); color: #fff; padding: 8px 16px; z-index: 99; }
+  .skip:focus { left: 8px; top: 8px; }
+
+  header { position: sticky; top: 0; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); z-index: 20; }
+  .nav { display: flex; align-items: center; gap: 18px; height: 62px; }
+  .logo { font-weight: 800; font-size: 20px; color: var(--text); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+  .logo svg { width: 24px; height: 24px; }
+  nav.links { display: flex; gap: 18px; margin-left: auto; }
+  nav.links a { color: var(--dim); text-decoration: none; font-size: 14.5px; font-weight: 600; }
+  nav.links a:hover { color: var(--primary); }
+  .toggles { display: flex; gap: 8px; }
+  .tg { background: var(--card); border: 1px solid var(--border); color: var(--text); border-radius: 10px; padding: 6px 12px; cursor: pointer; font-size: 13px; font-weight: 700; }
+  .tg:hover { border-color: var(--primary); }
+  @media (max-width: 760px) { nav.links { display: none; } }
+
+  .hero { display: grid; grid-template-columns: 1.15fr .85fr; gap: 40px; align-items: center; padding: 72px 0 60px; }
+  @media (max-width: 860px) { .hero { grid-template-columns: 1fr; padding: 44px 0; } .phone-wrap { justify-self: center; } }
+  .badge { display: inline-block; background: var(--primary-soft); color: var(--primary); font-size: 13px; font-weight: 700; padding: 5px 14px; border-radius: 999px; margin-bottom: 16px; }
+  h1 { font-size: clamp(34px, 5.5vw, 54px); line-height: 1.1; font-weight: 800; margin-bottom: 16px; }
+  h1 .grad { background: linear-gradient(120deg, var(--primary), var(--accent)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .sub { color: var(--dim); font-size: 18px; max-width: 520px; margin-bottom: 26px; }
+  .cta-row { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 26px; border-radius: 14px; font-weight: 700; font-size: 16px; text-decoration: none; cursor: pointer; border: none; }
+  .btn.primary { background: var(--primary); color: #fff; }
+  .btn.primary:hover { filter: brightness(1.08); }
+  .btn.ghost { background: transparent; color: var(--text); border: 2px solid var(--border); }
+  .btn.ghost:hover { border-color: var(--primary); color: var(--primary); }
+  .hero-note { color: var(--dim); font-size: 13px; margin-top: 14px; }
+
+  /* Phone mockup */
+  .phone-wrap { display: flex; justify-content: center; }
+  .phone { width: 250px; border-radius: 38px; border: 8px solid #1c1c1e; background: var(--card); box-shadow: 0 30px 60px var(--shadow); overflow: hidden; }
+  .phone .notch { height: 22px; background: #1c1c1e; border-radius: 0 0 16px 16px; width: 110px; margin: 0 auto; }
+  .pscreen { background: var(--bg); padding: 14px 12px 18px; min-height: 430px; font-size: 11px; }
+  .prow { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .pgreet { color: var(--dim); font-size: 10px; }
+  .ptitle { font-weight: 800; font-size: 15px; }
+  .phero { background: linear-gradient(135deg, #11946a, #0a5238); border-radius: 14px; color: #fdfbf4; padding: 14px; margin-bottom: 10px; }
+  .phero .big { font-size: 22px; font-weight: 800; }
+  .pcard { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 10px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+  .pcard .ic { width: 26px; height: 26px; border-radius: 50%; background: var(--primary-soft); display: flex; align-items: center; justify-content: center; font-size: 13px; }
+  .pcard b { font-size: 11px; }
+  .pcard small { color: var(--dim); font-size: 9.5px; display: block; }
+  .ptime { color: var(--primary); font-weight: 800; margin-left: auto; }
+  .pbar { height: 5px; background: var(--primary-soft); border-radius: 3px; margin-top: 6px; overflow: hidden; }
+  .pbar i { display: block; height: 100%; width: 60%; background: var(--primary); border-radius: 3px; }
+  .psec { color: var(--dim); font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin: 12px 0 6px; }
+  .par { font-size: 13px; text-align: right; line-height: 2; }
+
+  section { padding: 60px 0; }
+  .kicker { color: var(--primary); font-weight: 800; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+  h2 { font-size: clamp(26px, 3.6vw, 36px); font-weight: 800; margin-bottom: 10px; }
+  .lead { color: var(--dim); font-size: 17px; max-width: 640px; }
+
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 30px; }
+  @media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 24px; }
+  .card:hover { border-color: var(--primary); }
+  .card .em { font-size: 30px; }
+  .card h3 { font-size: 17px; margin: 10px 0 6px; }
+  .card p { color: var(--dim); font-size: 14.5px; }
+
+  .video-box { margin-top: 30px; position: relative; aspect-ratio: 16 / 9; max-width: 860px; border-radius: 20px; overflow: hidden; background: var(--card); border: 1px solid var(--border); }
+  .video-box iframe, .video-box video { width: 100%; height: 100%; border: none; display: block; }
+  .vposter { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; background: linear-gradient(135deg, var(--bg2), var(--card)); cursor: pointer; }
+  .vposter .play { width: 78px; height: 78px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px var(--shadow); }
+  .vposter .play svg { width: 30px; height: 30px; fill: #fff; margin-left: 5px; }
+  .vposter span { color: var(--dim); font-size: 14px; font-weight: 600; }
+
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 30px; counter-reset: st; }
+  @media (max-width: 860px) { .steps { grid-template-columns: 1fr; } }
+  .step { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 22px; counter-increment: st; }
+  .step::before { content: counter(st); display: inline-flex; width: 34px; height: 34px; border-radius: 50%; background: var(--primary); color: #fff; align-items: center; justify-content: center; font-weight: 800; margin-bottom: 10px; }
+  .step h3 { font-size: 16px; margin-bottom: 4px; }
+  .step p { color: var(--dim); font-size: 14px; }
+
+  .band { background: linear-gradient(135deg, var(--primary), var(--bg2)); border-radius: 24px; padding: 46px 40px; text-align: center; margin: 30px 0; }
+  .band h2 { color: #fff; }
+  .band p { color: rgba(255,255,255,.85); margin: 8px 0 22px; }
+  .band .btn { background: #fff; color: var(--primary); }
+
+  details { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 16px 20px; margin-top: 10px; }
+  summary { font-weight: 700; cursor: pointer; }
+  details p { color: var(--dim); margin-top: 8px; font-size: 14.5px; }
+
+  footer { border-top: 1px solid var(--border); padding: 34px 0; color: var(--dim); font-size: 14px; }
+  .foot { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+  footer a { color: var(--text); }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Aller au contenu</a>
+
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="#top" aria-label="Noor — accueil">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 3a9 9 0 1 0 5.4 16.2A10 10 0 0 1 15.5 3z" fill="var(--accent)"/></svg>
+      Noor
+    </a>
+    <nav class="links" aria-label="Navigation">
+      <a href="#features" data-fr="Fonctionnalités" data-en="Features">Fonctionnalités</a>
+      <a href="#video" data-fr="Vidéo" data-en="Video">Vidéo</a>
+      <a href="#how" data-fr="Comment ça marche" data-en="How it works">Comment ça marche</a>
+      <a href="#faq" data-fr="FAQ" data-en="FAQ">FAQ</a>
+    </nav>
+    <div class="toggles">
+      <button class="tg" id="langBtn" aria-label="Switch language">EN</button>
+      <button class="tg" id="themeBtn" aria-label="Changer de thème">☀️</button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <div class="wrap hero" id="top">
+    <div>
+      <span class="badge" data-fr="100% gratuit · sans compte · hors ligne" data-en="100% free · no account · offline">100% gratuit · sans compte · hors ligne</span>
+      <h1><span data-fr="Noor — ton compagnon de" data-en="Noor — your Ramadan">Noor — ton compagnon de</span> <span class="grad" data-fr="Ramadan" data-en="Ramadan companion">Ramadan</span></h1>
+      <p class="sub" data-fr="Coran complet hors ligne, horaires de prière, suivi du jeûne, dhikr et invocations — dans une app simple, belle et 100% privée." data-en="The complete Quran offline, prayer times, fasting tracker, dhikr and duas — in a simple, beautiful, 100% private app.">Coran complet hors ligne, horaires de prière, suivi du jeûne, dhikr et invocations — dans une app simple, belle et 100% privée.</p>
+      <div class="cta-row">
+        <a class="btn primary" href="app/" data-fr="🚀 Ouvrir l'app maintenant" data-en="🚀 Open the app now">🚀 Ouvrir l'app maintenant</a>
+        <a class="btn ghost" href="#video" data-fr="▶ Voir la démo" data-en="▶ Watch the demo">▶ Voir la démo</a>
+      </div>
+      <p class="hero-note" data-fr="Fonctionne sur téléphone et ordinateur — rien à installer." data-en="Works on phone and computer — nothing to install.">Fonctionne sur téléphone et ordinateur — rien à installer.</p>
+    </div>
+    <div class="phone-wrap" aria-hidden="true">
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="pscreen">
+          <div class="prow"><span class="pgreet" data-fr="Bonjour ☀️" data-en="Good morning ☀️">Bonjour ☀️</span><span class="ptime">12:35</span></div>
+          <div class="ptitle" data-fr="Ta journée" data-en="Your day">Ta journée</div>
+          <div class="phero"><div data-fr="Ramadan dans" data-en="Ramadan in">Ramadan dans</div><div class="big" data-fr="103 jours" data-en="103 days">103 jours</div></div>
+          <div class="pcard"><div class="ic">🕌</div><div><b data-fr="Prochaine prière" data-en="Next prayer">Prochaine prière</b><small>Dhuhr · Paris</small></div><span class="ptime">12:35</span></div>
+          <div class="pcard"><div class="ic">📖</div><div><b data-fr="Lecture du jour" data-en="Today's reading">Lecture du jour</b><span class="pbar"><i></i></span></div><span class="ptime">6/20</span></div>
+          <div class="pcard"><div class="ic">🤲</div><div><b>Astaghfirullah</b><small data-fr="33/33 ✓ objectif atteint" data-en="33/33 ✓ goal reached">33/33 ✓ objectif atteint</small></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section id="features">
+    <div class="wrap">
+      <div class="kicker" data-fr="Fonctionnalités" data-en="Features">Fonctionnalités</div>
+      <h2 data-fr="Tout ton Ramadan, dans une seule app" data-en="Your whole Ramadan, in one app">Tout ton Ramadan, dans une seule app</h2>
+      <p class="lead" data-fr="Pensée pour être simple : tu ouvres, tu suis, tu progresses. Et tout fonctionne sans internet." data-en="Designed to be simple: open it, follow it, grow. And everything works without internet.">Pensée pour être simple : tu ouvres, tu suis, tu progresses. Et tout fonctionne sans internet.</p>
+      <div class="grid">
+        <div class="card"><div class="em">📖</div><h3 data-fr="Coran complet, hors ligne" data-en="Full Quran, offline">Coran complet, hors ligne</h3><p data-fr="Les 604 pages du mushaf avec la traduction française ou anglaise, la taille du texte réglable et tes marques-page." data-en="All 604 mushaf pages with French or English translation, adjustable text size and your bookmarks.">Les 604 pages du mushaf avec la traduction française ou anglaise, la taille du texte réglable et tes marques-page.</p></div>
+        <div class="card"><div class="em">🕌</div><h3 data-fr="Horaires de prière" data-en="Prayer times">Horaires de prière</h3><p data-fr="Calculés pour ta ville, avec le compte à rebours de la prochaine prière et les heures de suhur et iftar." data-en="Calculated for your city, with the next-prayer countdown and suhoor and iftar times.">Calculés pour ta ville, avec le compte à rebours de la prochaine prière et les heures de suhur et iftar.</p></div>
+        <div class="card"><div class="em">✅</div><h3 data-fr="Suivi du jeûne et des prières" data-en="Fasting & prayers tracker">Suivi du jeûne et des prières</h3><p data-fr="Chaque jour : jeûne, les 5 prières, Taraweeh et ton journal privé — avec ta série de jours." data-en="Each day: fasting, the 5 prayers, Taraweeh and your private journal — with your day streak.">Chaque jour : jeûne, les 5 prières, Taraweeh et ton journal privé — avec ta série de jours.</p></div>
+        <div class="card"><div class="em">🤲</div><h3 data-fr="Dhikr avec objectifs" data-en="Dhikr with goals">Dhikr avec objectifs</h3><p data-fr="Choisis ta dhikr (Astaghfirullah, SubhanAllah…), fixe ton objectif et célèbre chaque palier atteint." data-en="Pick your dhikr (Astaghfirullah, SubhanAllah…), set your goal and celebrate each milestone.">Choisis ta dhikr (Astaghfirullah, SubhanAllah…), fixe ton objectif et célèbre chaque palier atteint.</p></div>
+        <div class="card"><div class="em">📊</div><h3 data-fr="Objectifs et évolution" data-en="Goals & progress">Objectifs et évolution</h3><p data-fr="Pages de Coran par jour, dhikr quotidien, séries et statistiques — tu vois tes progrès chaque semaine." data-en="Quran pages per day, daily dhikr, streaks and stats — you see your progress every week.">Pages de Coran par jour, dhikr quotidien, séries et statistiques — tu vois tes progrès chaque semaine.</p></div>
+        <div class="card"><div class="em">🔒</div><h3 data-fr="100% privé" data-en="100% private">100% privé</h3><p data-fr="Aucun compte, aucune donnée collectée, aucune connexion requise. Tout reste sur ton téléphone." data-en="No account, no data collected, no connection required. Everything stays on your phone.">Aucun compte, aucune donnée collectée, aucune connexion requise. Tout reste sur ton téléphone.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="video">
+    <div class="wrap">
+      <div class="kicker" data-fr="Démonstration" data-en="Demo">Démonstration</div>
+      <h2 data-fr="Voir l'app en action" data-en="See the app in action">Voir l'app en action</h2>
+      <p class="lead" data-fr="Une petite visite guidée : l'accueil, le suivi du jour, le Coran et tes progrès." data-en="A quick guided tour: the home, your daily tracking, the Quran and your progress.">Une petite visite guidée : l'accueil, le suivi du jour, le Coran et tes progrès.</p>
+      <div class="video-box" id="videoBox">
+        <div class="vposter" id="vposter" role="button" tabindex="0" aria-label="Lire la vidéo de démonstration">
+          <div class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          <span data-fr="Lire la démonstration" data-en="Play the demo">Lire la démonstration</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="wrap">
+      <div class="kicker" data-fr="Simple" data-en="Simple">Simple</div>
+      <h2 data-fr="Comment ça marche" data-en="How it works">Comment ça marche</h2>
+      <div class="steps">
+        <div class="step"><h3 data-fr="Ouvre l'app" data-en="Open the app">Ouvre l'app</h3><p data-fr="Un clic sur le lien. Choisis ta langue, ta ville et ton thème — c'est prêt." data-en="One click on the link. Pick your language, city and theme — you're set.">Un clic sur le lien. Choisis ta langue, ta ville et ton thème — c'est prêt.</p></div>
+        <div class="step"><h3 data-fr="Fixe tes objectifs" data-en="Set your goals">Fixe tes objectifs</h3><p data-fr="Pages de Coran par jour, dhikr quotidien, invocations : Noor s'adapte à ce que TOU tu veux vivre." data-en="Quran pages a day, daily dhikr, duas: Noor adapts to what YOU want to live.">Pages de Coran par jour, dhikr quotidien, invocations : Noor s'adapte à ce que TOU tu veux vivre.</p></div>
+        <div class="step"><h3 data-fr="Suis ton Ramadan" data-en="Track your Ramadan">Suis ton Ramadan</h3><p data-fr="Chaque jour, coche ton jeûne et tes prières, lis ton Coran et regarde tes progrès grandir." data-en="Each day, check your fast and prayers, read your Quran and watch your progress grow.">Chaque jour, coche ton jeûne et tes prières, lis ton Coran et regarde tes progrès grandir.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap">
+      <div class="kicker">FAQ</div>
+      <h2 data-fr="Questions fréquentes" data-en="Frequently asked">Questions fréquentes</h2>
+      <details><summary data-fr="C'est vraiment gratuit ?" data-en="Is it really free?">C'est vraiment gratuit ?</summary><p data-fr="Oui, entièrement. Pas de pub, pas d'abonnement, pas de compte à créer." data-en="Yes, entirely. No ads, no subscription, no account to create.">Oui, entièrement. Pas de pub, pas d'abonnement, pas de compte à créer.</p></details>
+      <details><summary data-fr="Mes données sont-elles collectées ?" data-en="Is my data collected?">Mes données sont-elles collectées ?</summary><p data-fr="Non. Tout reste sur ton appareil : ta progression, tes notes, tes objectifs. Rien n'est envoyé nulle part." data-en="No. Everything stays on your device: your progress, notes and goals. Nothing is sent anywhere.">Non. Tout reste sur ton appareil : ta progression, tes notes, tes objectifs. Rien n'est envoyé nulle part.</p></details>
+      <details><summary data-fr="Ça marche sur iPhone et Android ?" data-en="Does it work on iPhone and Android?">Ça marche sur iPhone et Android ?</summary><p data-fr="Oui — et sur ordinateur aussi. Sur téléphone, ajoute-la à ton écran d'accueil pour l'icône d'app." data-en="Yes — and on computer too. On phones, add it to your home screen for the app icon.">Oui — et sur ordinateur aussi. Sur téléphone, ajoute-la à ton écran d'accueil pour l'icône d'app.</p></details>
+      <details><summary data-fr="Et après le Ramadan ?" data-en="What about after Ramadan?">Et après le Ramadan ?</summary><p data-fr="L'app continue toute l'année : prières, Coran, dhikr et suivi quotidien — pas seulement en Ramadan." data-en="The app works all year: prayers, Quran, dhikr and daily tracking — not just in Ramadan.">L'app continue toute l'année : prières, Coran, dhikr et suivi quotidien — pas seulement en Ramadan.</p></details>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="band">
+        <h2 data-fr="Prêt pour un Ramadan organisé et serein ?" data-en="Ready for an organized, peaceful Ramadan?">Prêt pour un Ramadan organisé et serein ?</h2>
+        <p data-fr="Ouvre Noor maintenant — gratuit, privé, et déjà complet." data-en="Open Noor now — free, private, and already complete.">Ouvre Noor maintenant — gratuit, privé, et déjà complet.</p>
+        <a class="btn" href="app/" data-fr="🚀 Ouvrir Noor" data-en="🚀 Open Noor">🚀 Ouvrir Noor</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div>© 2026 Technissa · Noor</div>
+    <div data-fr="Aucune donnée collectée — 100% hors ligne" data-en="No data collected — 100% offline">Aucune donnée collectée — 100% hors ligne</div>
+    <div><span data-fr="Contact" data-en="Contact">Contact</span> : technissa26@gmail.com</div>
+  </div>
+</footer>
+
+<script>
+  // ==== VIDÉO DE DÉMONSTRATION ====
+  // Option A : mets l'ID de ta vidéo YouTube ici (ex: "dQw4w9WgXcQ")
+  var YT_VIDEO_ID = "";
+  // Option B : ou place un fichier "demo.mp4" à côté de cette page.
+  (function () {
+    var box = document.getElementById('videoBox');
+    var poster = document.getElementById('vposter');
+    function play() {
+      var fr = document.documentElement.lang === 'en' ? 'Watch the demo' : 'Lire la démonstration';
+      if (YT_VIDEO_ID) {
+        box.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + YT_VIDEO_ID + '" title="Noor — démonstration" allow="accelerometer; autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>';
+      } else {
+        box.innerHTML = '<video controls autoplay src="assets/demo.mp4" aria-label="' + fr + '"></video>';
+        var v = box.querySelector('video');
+        v.addEventListener('error', function () {
+          box.innerHTML = '<div class="vposter"><span>🎬 ' + (document.documentElement.lang === 'en' ? 'Demo video coming soon' : 'La vidéo de démonstration arrive bientôt') + '</span></div>';
+        });
+        v.load(); v.play().catch(function(){});
+      }
+    }
+    poster.addEventListener('click', play);
+    poster.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); play(); } });
+  })();
+
+  // ==== THÈME ====
+  var themeBtn = document.getElementById('themeBtn');
+  function setTheme(t) {
+    document.documentElement.setAttribute('data-theme', t);
+    themeBtn.textContent = t === 'dark' ? '☀️' : '🌙';
+    try { localStorage.setItem('site-theme', t); } catch (e) {}
+  }
+  var saved = null;
+  try { saved = localStorage.getItem('site-theme'); } catch (e) {}
+  var prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+  setTheme(saved || (prefersLight ? 'light' : 'dark'));
+  themeBtn.addEventListener('click', function () {
+    setTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  });
+
+  // ==== LANGUE ====
+  var langBtn = document.getElementById('langBtn');
+  function setLang(l) {
+    document.documentElement.lang = l;
+    langBtn.textContent = l === 'fr' ? 'EN' : 'FR';
+    document.querySelectorAll('[data-fr]').forEach(function (el) {
+      el.textContent = el.getAttribute('data-' + l);
+    });
+    try { localStorage.setItem('site-lang', l); } catch (e) {}
+  }
+  var savedLang = null;
+  try { savedLang = localStorage.getItem('site-lang'); } catch (e) {}
+  setLang(savedLang || (navigator.language && navigator.language.indexOf('fr') === 0 ? 'fr' : 'en'));
+  langBtn.addEventListener('click', function () {
+    setLang(document.documentElement.lang === 'fr' ? 'en' : 'fr');
+  });
+</script>
+</body>
+</html>
